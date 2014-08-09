@@ -1,42 +1,40 @@
 // server.js
 
-// set up ======================================================================
-// get all the tools we need
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 8080;
-var mongoose = require('mongoose');
-var passport = require('passport');
-var flash 	 = require('connect-flash');
+var port = process.env.PORT || 8080;
+var http = require('./app/app.js');
 
-var morgan       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
+// Setup emitting data to the clint
+var emitter = require('./app/SocketDataEmitter')(http);
 
-var configDB = require('./config/database.js');
+// Start mock data collection. TODO replace with tessel data
+var provider = require('./app/MockDataProvider');
 
-// configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+provider.init(emitter);
 
-require('./config/passport')(passport); // pass passport for configuration
+function CycleList() {
+    this.array = [];
+}
 
-// set up our express application
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
+CycleList.prototype.push = function(val) {
+    if (this.array.length >= 20) {
+        this.array = this.array.splice(1);
+    }
+    this.array.push(val);
+    //console.log(this.array.length);
+};
 
-app.set('view engine', 'ejs'); // set up ejs for templating
+var cache = new CycleList();
 
-// required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+emitter.on(provider.EVENT_NAME, function(data) {
+    console.log('adding to cache');
+    cache.push(data);
+});
 
-// routes ======================================================================
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+emitter.on('connection', function(socket) {
+    console.log('intializing data for client');
+    socket.emit('init', cache.array);
+});
 
-// launch ======================================================================
-app.listen(port);
+// launch
+http.listen(port);
 console.log('The magic happens on port ' + port);

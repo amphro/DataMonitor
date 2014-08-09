@@ -6,20 +6,32 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
 	<style>
-		body 		{ padding-top:80px; }
+		.container 		{ padding-top:40px; }
+		.chart { width : 100%; }
 	</style>
+
+	<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+
+
+	<script src="/Chart.js"></script>
+
+	<script src="/javascript/Monitor.js"></script>
 </head>
 <body>
+
+<div class="header">
+	<a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+	<a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
+</div>
+
 <div class="container">
 
 	<div class="jumbotron text-center">
-		<h1><span class="fa fa-lock"></span> Node Authentication</h1>
-
-		<p>Login or Register with:</p>
-
-		<a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Local Login</a>
-		<a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
+		<h1><!--<span class="fa fa-lock"></span>--> Monitor</h1>
 	</div>
+	<p>Real time temp data:</p>
+	<canvas id="myChart" height="400"></canvas>
 
 </div>
 </body>
