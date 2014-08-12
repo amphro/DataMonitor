@@ -46,7 +46,7 @@ $(document).ready(function() {
     var socket = io();
 
     console.log('Initializing socket...');
-    socket.on('init', function(datas) {
+    socket.on('init-mockData', function(datas) {
         var labels = []
         var temps = [];
 
@@ -91,7 +91,7 @@ $(document).ready(function() {
         console.log('Chart loaded. Listening for data...');
     });
 
-    socket.on('TEMP', function(msg) {
+    socket.on('mockData', function(msg) {
         if (chart) {
             if (chart.datasets[0].points.length >= 20) {
                 chart.removeData();

@@ -1,3 +1,5 @@
+var util = require('../utils.js');
+
 // app/routes.js
 module.exports = function(app, passport) {
 
@@ -24,7 +26,7 @@ module.exports = function(app, passport) {
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
-    
+
     // =====================================
     // SIGNUP ==============================
     // =====================================
@@ -50,7 +52,7 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
+    app.get('/profile', util.isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
             user : req.user // get the user out of session and pass to template
         });
@@ -63,16 +65,7 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+
+    // Load the rest of the routes. TODO do this through the file system
+    require('./api.js')(app, passport);
 };
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated()) {
-        return next();
-    }
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}

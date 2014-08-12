@@ -1,27 +1,39 @@
 
+var cache = require('./cache.js');
+var EVENT_NAME = 'mockData';
+var currentTemp = 70;
+var intervalId = null;
 
 module.exports = {
-    EVENT_NAME : 'TEMP',
-    minTemp : 30,
-    maxTemp : 110,
-    currentTemp : 70,
-    intervalId : null,
     init : function(emitter) {
         this.startDataStream(emitter);
+
+        emitter.on(EVENT_NAME, function(data) {
+            //console.log('adding to cache');
+            cache.addValue(EVENT_NAME, data);
+        });
+
+        emitter.on('connection', function(socket) {
+            socket.emit('init-' + EVENT_NAME, cache.getValues(EVENT_NAME));
+
+            socket.on('init-request-' + EVENT_NAME, function() {
+                socket.emit('init-' + EVENT_NAME, cache.getValues(EVENT_NAME));
+            });
+        });
+
     },
     startDataStream : function(emitter) {
-        var self = this;
-        this.intervalId = setInterval(function() {
+        intervalId = setInterval(function() {
             var directionUp = parseInt(Math.random() * 10 % 2);
             var randInt = Math.random() / 10;
             if (directionUp) {
-                self.currentTemp += randInt;
+                currentTemp += randInt;
             } else {
-                self.currentTemp -= randInt;
+                currentTemp -= randInt;
             }
 
-            emitter.emit(self.EVENT_NAME, {temp : self.currentTemp, time : Date.now()});
-            //console.log('emitted data to ' + self.EVENT_NAME);
+            emitter.emit(EVENT_NAME, {temp : currentTemp, time : Date.now()});
+            //console.log('emitted data to ' + EVENT_NAME);
         }, 5000);
     }
 }
