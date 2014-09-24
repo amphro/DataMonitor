@@ -42,11 +42,13 @@ function onVisibility(visibleFn, hiddenFn) {
 
 
 $(document).ready(function() {
+    // TODO change this to a list so the user can see multiple data sources
+    var eventName = 'temperature'; //mockData
     var chart = null;
     var socket = io();
 
     console.log('Initializing socket...');
-    socket.on('init-mockData', function(datas) {
+    socket.on('init-' + eventName, function(datas) {
         var labels = []
         var temps = [];
 
@@ -91,7 +93,7 @@ $(document).ready(function() {
         console.log('Chart loaded. Listening for data...');
     });
 
-    socket.on('mockData', function(msg) {
+    socket.on(eventName, function(msg) {
         if (chart) {
             if (chart.datasets[0].points.length >= 20) {
                 chart.removeData();

@@ -2,37 +2,58 @@
 <!doctype html>
 <html>
 <head>
-	<title>Node Authentication</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-	<style>
-		.container 		{ padding-top:40px; }
-		.chart { width : 100%; }
-	</style>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
 
-	<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
-	<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+        .jumbotron {
+            padding-top: 2px;
+            padding-bottom: 20px;
+            margin-top: 40px;
+        }
+        .chart { width : 100%; }
+    </style>
+
+    <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
 
 
-	<script src="/Chart.js"></script>
+    <script src="/Chart.js"></script>
 
-	<script src="/javascript/Monitor.js"></script>
+    <script src="/javascript/Monitor.js"></script>
 </head>
 <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Data Monitor</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <div class="navbar-form navbar-right" role="form">
+            <!-- Hide for now, since login doesn't matter
+            <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+            <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
+            -->
+          </div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
 
-<div class="header">
-	<a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
-	<a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
-</div>
+    <div class="jumbotron text-center">
+        <h1><!--<span class="fa fa-lock"></span>--> Monitor</h1>
+    </div>
 
-<div class="container">
+    <div class="container">
 
-	<div class="jumbotron text-center">
-		<h1><!--<span class="fa fa-lock"></span>--> Monitor</h1>
-	</div>
-	<p>Real time temp data:</p>
-	<canvas id="myChart" height="400"></canvas>
-
+    <p>Real time temp data:</p>
+    <canvas id="myChart" height="400"></canvas>
 </div>
 </body>
 </html>
